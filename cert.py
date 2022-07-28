@@ -1,7 +1,7 @@
 
 import subprocess
 from pathlib import Path
-from commands import createCertCommand, createCertKeyCommand, createCsrCommand, createPKS12Command, createRootCACommand, createRootCertCommand
+from commands import createCertCommand, createCertKeyCommand, createCsrCommand, createPKS12Command, createRootCACommand, createRootCertCommand, createSha256FingerprintCommand
 from model import CertificateDir
 from util import getRandomDomain, serchCert, choice
 import os
@@ -30,6 +30,10 @@ def createDeviceCert(rootCert: CertificateDir):
     runProcess(command=createCertKeyCommand(domain=commonName), dir=dir)
     runProcess(command=createCsrCommand(domain=commonName), dir=dir)
     runProcess(command=createCertCommand(domain=commonName, keyPath=keyPath, certPath=certPath), dir=dir)
+
+    fingerprintChoice = choice("Create fingerprint file?", 'y', 'n')
+    if fingerprintChoice == 'y':
+        runProcess(command=createSha256FingerprintCommand(domain=commonName), dir=dir)
 
     pk12Choice = choice("Create PK12 file?", 'y', 'n')
     if pk12Choice == 'y':

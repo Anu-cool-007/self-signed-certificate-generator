@@ -23,7 +23,7 @@ def createPKS12Command(domain: str, alias: str):
 
 
 def createSha256FingerprintCommand(domain: str):
-    return f"openssl x509 -noout -fingerprint -sha256 -inform pem -in {domain}.crt -out {domain}.fingerprint"
+    return f"openssl x509 -in {domain}.crt -pubkey -noout | openssl pkey -pubin -outform der | openssl dgst -sha256 -binary | openssl enc -base64 -out {domain}.fingerprint"
 
 
 def verifyCsrCommand(domain: str):

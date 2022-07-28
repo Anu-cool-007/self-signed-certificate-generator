@@ -1,30 +1,30 @@
 def createRootCACommand(keyName: str):
-    return "openssl genrsa -des3 -out {keyName}.key 4096".format(keyName=keyName)
+    return f"openssl genrsa -des3 -out {keyName}.key 4096"
 
 
 def createRootCertCommand(keyName: str, certName: str):
-    return "openssl req -x509 -new -nodes -key {keyName}.key -sha256 -days 1024 -out {certName}.crt" \
-        .format(keyName=keyName, certName=certName)
+    return f"openssl req -x509 -new -nodes -key {keyName}.key -sha256 -days 1024 -out {certName}.crt"
 
 
 def createCertKeyCommand(domain: str):
-    return "openssl genrsa -out {domain}.key 2048".format(domain=domain)
+    return f"openssl genrsa -out {domain}.key 2048"
 
 
 def createCsrCommand(domain: str):
-    return "openssl req -new -key {domain}.key -out {domain}.csr".format(domain=domain)
+    return f"openssl req -new -key {domain}.key -out {domain}.csr"
 
 
 def createCertCommand(domain: str, keyPath: str, certPath: str):
-    return "openssl x509 -req -in {domain}.csr" \
-        " -CA {certPath} -CAkey {keyPath}" \
-        " -CAcreateserial -out {domain}.crt -days 500 -sha256" \
-        .format(domain=domain, certPath=certPath, keyPath=keyPath)
+    return f"openssl x509 -req -in {domain}.csr -CA {certPath} -CAkey {keyPath} -CAcreateserial -out {domain}.crt -days 500 -sha256"
+
+
+def createPKS12Command(domain: str, alias: str):
+    return f"openssl pkcs12 -export -in {domain}.pem -inkey {domain}.key -name {alias} -out {domain}.p12"
 
 
 def verifyCsrCommand(domain: str):
-    return "openssl req -in {domain}.csr -noout -text".format(domain=domain)
+    return f"openssl req -in {domain}.csr -noout -text"
 
 
 def verifyCertCommand(domain: str):
-    return "openssl x509 -in {domain}.crt -text -noout".format(domain=domain)
+    return f"openssl x509 -in {domain}.crt -text -noout"

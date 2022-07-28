@@ -34,7 +34,7 @@ def createDeviceCert(rootCert: CertificateDir):
     pk12Choice = choice("Create PK12 file?", 'y', 'n')
     if pk12Choice == 'y':
         alias = input(f"Enter alias [{commonName}]: ") or commonName
-        runProcess(command=createPKS12Command(domain=commonName, keyPath=keyPath, alias=alias), dir=dir)
+        runProcess(command=createPKS12Command(domain=commonName, alias=alias), dir=dir)
 
     print("Created certificate at:", os.path.abspath(dir))
 
